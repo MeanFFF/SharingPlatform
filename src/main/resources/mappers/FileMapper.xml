@@ -6,6 +6,7 @@
       <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="category_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -17,6 +18,7 @@
       <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="category_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -29,11 +31,13 @@
   </sql>
   <insert id="insert" parameterType="com.platform.pojo.File">
     insert into platform_file (id, category_id, name, 
-      price, status, create_time, 
-      update_time, detail)
+      address, price, status, 
+      create_time, update_time, detail
+      )
     values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR})
+      #{address,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.platform.pojo.File">
     insert into platform_file
@@ -46,6 +50,9 @@
       </if>
       <if test="name != null">
         name,
+      </if>
+      <if test="address != null">
+        address,
       </if>
       <if test="price != null">
         price,
@@ -72,6 +79,9 @@
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
       </if>
       <if test="price != null">
         #{price,jdbcType=DECIMAL},

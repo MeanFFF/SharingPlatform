@@ -13,6 +13,9 @@
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
+  <sql id="Base_Column_List">
+    id,username,password,email,phone,role,create_time,update_time
+  </sql>
   <insert id="insert" parameterType="com.platform.pojo.User">
     insert into platform_user (id, username, password, 
       email, phone, role, 
@@ -76,4 +79,51 @@
       </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platform.pojo.User" >
+    update mmall_user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="checkUsername" resultType="java.lang.Integer">
+      select count(1) from platform_user
+      where username = #{username}
+    </select>
+  <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from platform_user
+    where  username = #{username}
+    and password = #{password}
+  </select>
+  <select id="checkEmail" resultType="java.lang.Integer">
+    select count(1) from platform_user
+    where email = #{email}
+  </select>
+  <select id="checkEmailByUserId" resultType="java.lang.Integer">
+    select count(1) from platform_user
+    where email = #{email}
+    and id != #{id}
+  </select>
 </mapper>

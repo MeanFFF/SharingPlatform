@@ -8,7 +8,11 @@ public class TestController {
 
     @RequestMapping("/hello")
     public ModelAndView add() {
+<<<<<<< HEAD
         ModelAndView mav = new ModelAndView("/hello.jsp");
+=======
+        ModelAndView mav = new ModelAndView("hello");
+>>>>>>> github/v1.0
         mav.addObject("hello", "hello");
         return mav;
     }

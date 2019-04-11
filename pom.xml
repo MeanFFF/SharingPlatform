@@ -104,45 +104,45 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
     <!-- spring dao依赖 -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
 
     <!-- spring test -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>4.1.6.RELEASE</version>
+      <version>5.1.5.RELEASE</version>
     </dependency>
 
     <!-- redis客户端jedis -->
@@ -184,48 +184,6 @@
       <version>3.6</version>
     </dependency>
 
-    <!-- mybatis pager -->
-
-    <dependency>
-      <groupId>com.github.pagehelper</groupId>
-      <artifactId>pagehelper</artifactId>
-      <version>4.1.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.miemiedev</groupId>
-      <artifactId>mybatis-paginator</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.jsqlparser</groupId>
-      <artifactId>jsqlparser</artifactId>
-      <version>0.9.4</version>
-    </dependency>
-
-
-    <!-- pageHelper -->
-    <dependency>
-      <groupId>com.github.pagehelper</groupId>
-      <artifactId>pagehelper</artifactId>
-      <version>5.1.2-beta</version>
-    </dependency>
-
-    <!--jsqlparser-->
-    <dependency>
-      <groupId>com.github.jsqlparser</groupId>
-      <artifactId>jsqlparser</artifactId>
-      <version>1.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.5</version>
-    </dependency>
-
-
 
   </dependencies>
 
@@ -237,17 +195,6 @@
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
-
-        <plugin>
-          <groupId>org.mybatis.generator</groupId>
-          <artifactId>mybatis-generator-maven-plugin</artifactId>
-          <version>1.3.7</version>
-          <configuration>
-            <verbose>true</verbose>
-            <overwrite>true</overwrite>
-          </configuration>
-        </plugin>
-
         <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>

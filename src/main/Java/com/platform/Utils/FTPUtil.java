@@ -1,4 +1,4 @@
-package Utils;
+package com.platform.Utils;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -12,6 +12,7 @@ import java.net.SocketException;
 
 public class FTPUtil {
     /*TODO try-catch-finally -> try(resources)-catch*/
+    //123
     public static FTPClient ftpClient = null;
     public static FTPClient getFTPClient(String ftpHost, int ftpPort, String ftpUserName,
                                     String ftpPassword) {

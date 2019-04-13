@@ -10,8 +10,6 @@ public class File {
 
     private String name;
 
-    private String address;
-
     private BigDecimal price;
 
     private Integer status;
@@ -22,22 +20,20 @@ public class File {
 
     private String detail;
 
-    public File(Integer id, Integer categoryId, String name, String address, BigDecimal price, Integer status, Date createTime, Date updateTime) {
+    public File(Integer id, Integer categoryId, String name, BigDecimal price, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
-        this.address = address;
         this.price = price;
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
 
-    public File(Integer id, Integer categoryId, String name, String address, BigDecimal price, Integer status, Date createTime, Date updateTime, String detail) {
+    public File(Integer id, Integer categoryId, String name, BigDecimal price, Integer status, Date createTime, Date updateTime, String detail) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
-        this.address = address;
         this.price = price;
         this.status = status;
         this.createTime = createTime;
@@ -71,14 +67,6 @@ public class File {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
     }
 
     public BigDecimal getPrice() {

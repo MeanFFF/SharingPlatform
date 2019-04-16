@@ -40,9 +40,10 @@
         <!-- 分页插件 -->
         <property name="plugins">
             <array>
-                <bean class="com.github.pagehelper.PageInterceptor">
+                <bean class="com.github.pagehelper.PageHelper">
                     <property name="properties">
                         <value>
+                            dialect=mysql
                         </value>
                     </property>
                 </bean>
@@ -53,8 +54,6 @@
 
     <!--４:配置扫描Dao接口包,动态实现DAO接口,注入到spring容器-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!--注入SqlSessionFactory-->
-        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
         <!-- 给出需要扫描的Dao接口-->
         <property name="basePackage" value="com.platform.dao"/>
     </bean>

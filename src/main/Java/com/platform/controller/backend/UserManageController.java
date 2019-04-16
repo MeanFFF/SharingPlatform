@@ -40,14 +40,8 @@ public class UserManageController {
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse logout(HttpSession session){
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if(user != null){
             session.removeAttribute(Const.CURRENT_USER);
             return ServerResponse.createBySuccess();
-        }
-
-        return ServerResponse.createByError();
-
     }
 
 

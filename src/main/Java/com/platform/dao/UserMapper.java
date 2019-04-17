@@ -3,6 +3,8 @@ package com.platform.dao;
 import com.platform.pojo.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     int insert(User record);
 
@@ -17,4 +19,6 @@ public interface UserMapper {
     int checkEmailByUserId(String email, Integer id);
 
     int updateByPrimaryKeySelective(User user);
+
+    List<User> selectList();
 }

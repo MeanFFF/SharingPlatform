@@ -1,13 +1,19 @@
 package com.platform.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.platform.common.Const;
 import com.platform.common.ServerResponse;
 import com.platform.dao.UserMapper;
 import com.platform.pojo.User;
 import com.platform.service.IUserService;
+import com.platform.vo.UserListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -28,6 +34,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("密码错误");
         }
 
+        // 登录成功时, 把密码设为空
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登录成功", user);
     }
@@ -79,4 +86,40 @@ public class UserServiceImpl implements IUserService {
         }
         return ServerResponse.createByError();
     }
+
+    public ServerResponse<PageInfo> getList(int pageNum, int pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+
+        //从数据库中获得用户列表
+        List<User> userList = userMapper.selectList();
+
+        // userVo:你想要传给前端的包装数据
+        // 创建一个userVo的list
+        List<UserListVo> userListVoList = Lists.newArrayList();
+
+        // 将用户列表中的user => userVo
+        for(User userItem: userList){
+            if(!checkAdminRole(userItem).isSuccess()){
+                UserListVo userListVo = assembleUserListVo(userItem);
+                userListVoList.add(userListVo);
+            }
+        }
+
+        PageInfo pageResult = new PageInfo(userList);
+        pageResult.setList(userListVoList);
+        return ServerResponse.createBySuccess(pageResult);
+    }
+
+    private UserListVo assembleUserListVo(User user) {
+        UserListVo userListVo = new UserListVo();
+        userListVo.setId(user.getId());
+        userListVo.setUsername(user.getUsername());
+        userListVo.setEmail(user.getEmail());
+        userListVo.setPhone(user.getPhone());
+        userListVo.setCreateTime(user.getCreateTime());
+        userListVo.setRole(user.getRole());
+        return userListVo;
+    }
+
+
 }

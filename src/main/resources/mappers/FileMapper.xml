@@ -26,8 +26,8 @@
       <arg column="detail" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
-  <sql id="Blob_Column_List">
-    detail
+  <sql id="Base_Column_List">
+    id,category_id,name,address,price,status,create_time,update_time,detail
   </sql>
   <insert id="insert" parameterType="com.platform.pojo.File">
     insert into platform_file (id, category_id, name, 
@@ -100,4 +100,67 @@
       </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKeySelective">
+    update platform_file
+    <set >
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from platform_file
+      order by id asc
+    </select>
+    <select id="selectSearchList" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from platform_file
+      <where>
+        <if test="fileId != null">
+          and id = #{fileId}
+        </if>
+        <if test="fileName != null">
+          and name like #{fileName}
+        </if>
+      </where>
+    </select>
+  <select id="selectByIdAndName" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List"/>
+    from platform_file
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="name != null">
+        and name = #{name}
+      </if>
+    </where>
+  </select>
+
 </mapper>

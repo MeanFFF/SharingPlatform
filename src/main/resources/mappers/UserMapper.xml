@@ -126,4 +126,10 @@
     where email = #{email}
     and id != #{id}
   </select>
+    <select id="selectList" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from platform_user
+      order by id asc
+    </select>
 </mapper>

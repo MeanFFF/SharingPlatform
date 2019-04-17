@@ -1,5 +1,6 @@
 package com.platform.service;
 
+import com.github.pagehelper.PageInfo;
 import com.platform.common.ServerResponse;
 import com.platform.pojo.User;
 
@@ -10,4 +11,6 @@ public interface IUserService {
     ServerResponse<User> updateInformation(User user);
 
     ServerResponse checkAdminRole(User user);
+
+    ServerResponse<PageInfo> getList(int pageNum, int pageSize);
 }

@@ -17,4 +17,6 @@ public interface FileMapper {
     int updateByPrimaryKeySelective(File file);
 
     File selectByIdAndName(@Param("id") Integer id, @Param("name") String name);
+
+    List<File> selectListByStatus(int status);
 }

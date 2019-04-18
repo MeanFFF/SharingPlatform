@@ -3,6 +3,8 @@ package com.platform.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.platform.Utils.FTPUtil;
+import com.platform.common.Const;
 import com.platform.common.ServerResponse;
 import com.platform.dao.FileMapper;
 import com.platform.pojo.File;
@@ -11,8 +13,14 @@ import com.platform.vo.FileListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FileServiceImpl implements IFileService {
@@ -39,6 +47,24 @@ public class FileServiceImpl implements IFileService {
 
     }
 
+    public ServerResponse<PageInfo> getUncheckedFileList(int pageNum, int pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<File> fileList = fileMapper.selectListByStatus(Const.FileStatus.UNCHECKED);
+
+        List<FileListVo> fileListVoList = Lists.newArrayList();
+
+        for(File fileItem : fileList){
+            FileListVo fileListVo = assembleFileListVo(fileItem);
+            fileListVoList.add(fileListVo);
+        }
+        PageInfo pageResult = new PageInfo(fileList);
+        pageResult.setList(fileListVoList);
+        return ServerResponse.createBySuccess(pageResult);
+
+    }
+
+
     /**
      * 获取搜索的文件列表
      * 搜索分为用id搜索,用文件名搜索
@@ -48,7 +74,6 @@ public class FileServiceImpl implements IFileService {
      * @param pageSize
      * @return
      */
-    //
     @Override
     public ServerResponse getSearchFileList(Integer fileId, String fileName, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -122,6 +147,79 @@ public class FileServiceImpl implements IFileService {
         fileListVo.setPrice(file.getPrice());
         return fileListVo;
     }
+
+
+    /**
+     * 文件 => upload文件夹 => ftp服务器
+     * @param file
+     * @param path
+     * @return
+     */
+    public String uploadFile(MultipartFile file, String path){
+        String fileName = file.getOriginalFilename();
+
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+        String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
+
+        System.out.println(fileName + " : " + fileExtensionName + " : " + uploadFileName);
+
+        java.io.File fileDir = new java.io.File(path);
+        if(!fileDir.exists()){
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+
+        java.io.File targetFile = new java.io.File(path, uploadFileName);
+
+        try {
+            file.transferTo(targetFile);
+
+            FTPUtil.uploadFile(Lists.newArrayList(targetFile));
+
+            targetFile.delete();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return targetFile.getName();
+
+    }
+
+    @Override
+    public ServerResponse addFile(HttpServletRequest request, MultipartFile file, Integer categoryId, String detail, Integer price) {
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        String targetFileName = this.uploadFile(file, path);
+        File newfile = new File();
+        newfile.setName(file.getOriginalFilename());
+        newfile.setStatus(Const.FileStatus.UNCHECKED);
+        newfile.setAddress(targetFileName);
+        newfile.setCategoryId(categoryId);
+        newfile.setCreateTime(new Date());
+        newfile.setDetail(detail);
+        newfile.setPrice(new BigDecimal(price));
+
+
+        int rowCount = fileMapper.insertSelective(newfile);
+        if(rowCount > 0){
+            return ServerResponse.createBySuccess("上传文件成功");
+        }
+        return ServerResponse.createByErrorMessage("上传文件失败");
+    }
+
+//    /**
+//     * 添加文件
+//     * @param newfile
+//     * @return
+//     */
+//    @Override
+//    public ServerResponse addFile(File newfile) {
+//        int rowCount = fileMapper.insertSelective(newfile);
+//        if(rowCount > 0){
+//            return ServerResponse.createBySuccess("上传文件成功");
+//        }
+//        return ServerResponse.createByErrorMessage("上传文件失败");
+//    }
 
 
 }

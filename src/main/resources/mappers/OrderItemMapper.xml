@@ -27,7 +27,7 @@
     </constructor>
   </resultMap>
   <sql id="Blob_Column_List">
-    file_detail
+    id,user_id,order_no,file_id,file_name,price,create_time,update_time,file_detail
   </sql>
   <insert id="insert" parameterType="com.platform.pojo.OrderItem">
     insert into platform_order_item (id, user_id, order_no, 
@@ -100,4 +100,10 @@
       </if>
     </trim>
   </insert>
+    <select id="getByOrderNo" resultMap="BaseResultMap">
+      select
+      <include refid="Blob_Column_List"/>
+      from platform_order_item
+      where order_no = #{orderNo}
+    </select>
 </mapper>

@@ -1,11 +1,10 @@
-package com.platform.pojo;
+package com.platform.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
-public class Order {
-    private Integer id;
-
+public class OrderVo {
     private Long orderNo;
 
     private Integer userId;
@@ -20,31 +19,7 @@ public class Order {
 
     private Date createTime;
 
-    private Date updateTime;
-
-    public Order(Integer id, Long orderNo, Integer userId, BigDecimal payment, Integer paymentType, Integer status, Date endTime, Date createTime, Date updateTime) {
-        this.id = id;
-        this.orderNo = orderNo;
-        this.userId = userId;
-        this.payment = payment;
-        this.paymentType = paymentType;
-        this.status = status;
-        this.endTime = endTime;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-    }
-
-    public Order() {
-        super();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private List<OrderItemVo> orderItemVoList;
 
     public Long getOrderNo() {
         return orderNo;
@@ -102,12 +77,11 @@ public class Order {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public List<OrderItemVo> getOrderItemVoList() {
+        return orderItemVoList;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setOrderItemVoList(List<OrderItemVo> orderItemVoList) {
+        this.orderItemVoList = orderItemVoList;
     }
-
 }

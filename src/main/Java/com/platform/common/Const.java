@@ -9,4 +9,10 @@ public class Const {
         int ROLE_CUSTOMER = 1; //普通用户
         int ROLE_ADMIN = 0;//管理员
     }
+
+    public interface FileStatus{
+        int UNCHECKED = 0;
+        int CHECKED = 1;
+        int DELETE = 2;
+    }
 }

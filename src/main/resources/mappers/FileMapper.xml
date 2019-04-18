@@ -162,5 +162,11 @@
       </if>
     </where>
   </select>
+  <select id="selectListByStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from platform_file
+    where status = #{status}
+  </select>
 
 </mapper>

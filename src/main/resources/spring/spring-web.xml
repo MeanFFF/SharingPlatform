@@ -28,4 +28,12 @@
     <!-- 4:扫描web相关的bean -->
     <context:component-scan base-package="com.platform.controller"/>
 
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600"/> <!-- 上传最大值为100m -->
+        <property name="maxInMemorySize" value="0" /><!--低于这个值只能保存在内存中-->
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+
+
 </beans>

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,22 +127,33 @@ public class FileManagerController {
             return ServerResponse.createByErrorMessage("价格不能为空");
         }
 
-        return iFileService.addFile(request, file, categoryId, detail, price);
+        return iFileService.addFile(request, file, fileName, categoryId, detail, price);
 
     }
 
-    // TODO 用户下载逻辑
-    @RequestMapping("download")
+    // TODO 用户下载逻辑 要封装起来,达到要求才能够暴露下载地址!!!
+    @RequestMapping(value = "download", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse downloadFile(){
+    public ServerResponse downloadFile(HttpSession session, Integer fileId){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录,请登录");
+        }
         try {
             String localpath = "G:/ftpdownload/";
-            String filename = "53077d28-d272-48ec-9510-5781bca9c0d8.exe";
+            /**
+             * 先根据fileId从redis缓存中去真实文件名
+             * 如果redis中不存在,再从数据库中取
+             */
+            ServerResponse response = iFileService.getFileDetail(fileId);
+            com.platform.pojo.File thisFile = (com.platform.pojo.File) response.getData();
+            String filename = thisFile.getName();
+            String fileAddress = thisFile.getAddress();
             File file = new File(localpath + filename);
             if(file.exists()){
                 return ServerResponse.createBySuccess("文件已存在");
             }else{
-                boolean d = FTPUtil.downloadFile(filename, localpath);
+                boolean d = FTPUtil.downloadFile(filename, fileAddress, localpath);
                 if(d == true){
                     return ServerResponse.createBySuccess("文件下载成功");
                 }else {

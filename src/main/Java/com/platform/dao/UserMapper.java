@@ -21,4 +21,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User user);
 
     List<User> selectList();
+
+    User getUserByIdOrName(@Param("userId") Integer userId, @Param("username") String usrename);
 }

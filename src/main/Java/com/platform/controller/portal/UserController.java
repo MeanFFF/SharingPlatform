@@ -3,14 +3,16 @@ package com.platform.controller.portal;
 
 import com.platform.common.Const;
 import com.platform.common.ServerResponse;
+import com.platform.dao.UserMapper;
 import com.platform.pojo.User;
 import com.platform.service.IUserService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -65,8 +67,32 @@ public class UserController {
             response.getData().setUsername(currentUser.getUsername());
             session.setAttribute(Const.CURRENT_USER, response.getData());
         }
-
         return response;
+    }
+
+    @RequestMapping(value = "reset_pwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse resetPwd(HttpSession session){
+        User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+        if(currentUser == null){
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        return iUserService.resetPassword(currentUser);
+    }
+
+    @RequestMapping(value = "change")
+    @ResponseBody
+    public ServerResponse changePwd(String uuid){
+        return iUserService.changePwd(uuid);
+    }
+
+    @RequestMapping(value = "changing_pwd")
+    @ResponseBody
+    public ServerResponse changingPwd(String uuid, @RequestParam(value = "newPwd") String newPwd){
+        if(StringUtils.isBlank(newPwd)){
+            return ServerResponse.createByErrorMessage("密码不能为空");
+        }
+        return iUserService.changingPwd(uuid, newPwd);
     }
 
 }

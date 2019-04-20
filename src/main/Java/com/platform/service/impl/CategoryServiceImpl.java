@@ -24,6 +24,12 @@ public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    /**
+     * 增加品类
+     * @param categoryName  品类名称
+     * @param parentId      品类的上级id(0为根)
+     * @return
+     */
     public ServerResponse addCategory(String categoryName, Integer parentId){
         if(parentId == null || StringUtils.isBlank(categoryName)){
             return ServerResponse.createByErrorMessage("添加品类错误");
@@ -42,6 +48,12 @@ public class CategoryServiceImpl implements ICategoryService {
         return ServerResponse.createByErrorMessage("添加品类失败");
     }
 
+    /**
+     * 更新品类名称
+     * @param categoryId    品类id
+     * @param categoryName  新的品类名称
+     * @return
+     */
     public ServerResponse updateCategoryName(Integer categoryId, String categoryName){
         if(categoryId == null || StringUtils.isBlank(categoryName)){
             return ServerResponse.createByErrorMessage("更新品类错误");
@@ -61,6 +73,11 @@ public class CategoryServiceImpl implements ICategoryService {
 
     }
 
+    /**
+     * 删除品类
+     * @param categoryId    品类id
+     * @return
+     */
     public ServerResponse deleteCategoryById(Integer categoryId){
         if(categoryId == null){
             return ServerResponse.createByErrorMessage("删除品类错误");
@@ -76,7 +93,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     /**
-     * 根据父节点,得到父节点的所有孩子节点
+     * 根据父节点,得到该父节点的所有孩子节点
      * @param parentId
      * @return
      */
@@ -88,6 +105,11 @@ public class CategoryServiceImpl implements ICategoryService {
         return ServerResponse.createBySuccess(categoryList);
     }
 
+    /**
+     * 递归遍历,返回该节点和其所有子节点
+     * @param categoryId
+     * @return
+     */
     public ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer categoryId){
         Set<Category> categoryset = new HashSet<>();
         findChildCategory(categoryset, categoryId);

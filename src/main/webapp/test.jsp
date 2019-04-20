@@ -23,11 +23,5 @@
     <input type="number" name="price"><br>
     <input type="submit" value="upload">
 </form>
-<br>
-<br>
-<br>
-<form action="/manage/file/download">
-    <button>download</button>
-</form>
 </body>
 </html>

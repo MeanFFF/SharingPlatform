@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +29,7 @@ public class FTPUtilTest {
             if(file.exists()){
                 System.out.println("文件已存在");
             }else{
-                boolean d = FTPUtil.downloadFile(filename, localpath);
+                boolean d = FTPUtil.downloadFile("idm.exe", filename, localpath);
                 System.out.println(d);
             }
 
@@ -36,6 +37,11 @@ public class FTPUtilTest {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void test(){
+        System.out.println(new Date());
     }
 
 }

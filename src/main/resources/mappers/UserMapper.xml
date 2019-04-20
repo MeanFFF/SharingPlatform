@@ -80,7 +80,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.platform.pojo.User" >
-    update mmall_user
+    update platform_user
     <set >
       <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
@@ -131,5 +131,18 @@
       <include refid="Base_Column_List"/>
       from platform_user
       order by id asc
+    </select>
+    <select id="getUserByIdOrName" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from platform_user
+      <where>
+        <if test="userId != null">
+          and id = #{userId}
+        </if>
+        <if test="username != null">
+          and username = #{username}
+        </if>
+      </where>
     </select>
 </mapper>

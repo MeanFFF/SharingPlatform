@@ -66,28 +66,42 @@ public class FTPUtil {
         return uploaded;
     }
 
-    public static boolean downloadFile(String filename, String localpath) throws IOException {
+    /**
+     * 看下面downloadFile
+     */
+    public static boolean downloadFile(String filename, String fileAddress, String localpath) throws IOException {
         FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
         logger.info("开始连接ftp服务器");
-        boolean result = ftpUtil.downloadFile("",filename,localpath);
+        boolean result = ftpUtil.downloadFile("",filename, fileAddress,localpath);
         logger.info("开始连接ftp服务器,结束下载,下载结果:{}", result);
         return result;
     }
 
 
-
-    private boolean downloadFile(String pathname, String filename, String localpath) throws IOException {
+    /**
+     *
+     * @param pathname      ftp文件目录
+     * @param filename      文件真实名
+     * @param fileAddress   文件在ftp下的名字(uuid生成的)
+     * @param localpath     本地存储路径(文件夹)
+     * @return
+     * @throws IOException
+     */
+    private boolean downloadFile(String pathname, String filename, String fileAddress, String localpath) throws IOException {
         boolean downloaded = true;
         FileOutputStream fos = null;
 
         if(connectServer(this.ip,this.port,this.user,this.pwd)){
             try {
                 logger.info("开始下载文件");
+                // 更换目录
                 ftpClient.changeWorkingDirectory(pathname);
-
+                filename += fileAddress.substring(fileAddress.lastIndexOf("."));
+                // 创建本地文件
                 File localFile = new File(localpath + filename);
                 fos = new FileOutputStream(localFile);
-                ftpClient.retrieveFile(filename, fos);
+                // 将ftp中的文件输出到本地文件
+                ftpClient.retrieveFile(fileAddress, fos);
 
             } catch (IOException e) {
                 logger.error("下载文件异常",e);

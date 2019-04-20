@@ -17,7 +17,7 @@ public interface IFileService {
 
     String uploadFile(MultipartFile file, String path);
 
-    ServerResponse addFile(HttpServletRequest request, MultipartFile file, Integer categoryId, String detail, Integer price);
+    ServerResponse addFile(HttpServletRequest request, MultipartFile file, String fileName, Integer categoryId, String detail, Integer price);
 
     ServerResponse<PageInfo> getUncheckedFileList(int pageNum, int pageSize);
 }
